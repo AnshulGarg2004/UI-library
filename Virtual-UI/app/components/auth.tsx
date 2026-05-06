@@ -6,6 +6,9 @@ import { TbCopy, TbDownload, TbLogin2, TbSettings, TbX } from "react-icons/tb";
 import React, { useEffect, useState } from 'react'
 import type { IconType } from 'react-icons/lib';
 import { FcGoogle } from 'react-icons/fc';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '@/utils/firebase';
+import axios from 'axios';
 
 
 
@@ -37,6 +40,26 @@ const Auth = ({ onClose }: AuthProps) => {
 
         return () => clearInterval(timer);
     }, []);
+
+    const googleProvider = async () => {
+        try {
+            const response = await signInWithPopup(auth, provider);
+            console.log("Response: ", response);
+            let user = response.user;
+            let name = user.displayName;
+            let email = user.email;
+
+            const result = await axios.post('api/sign-in', {name, email}, {
+                withCredentials : true,
+            });
+
+            console.log("result from sign-in: ", result);
+            
+            
+        } catch (error) {
+            console.log("Error signing in with Google: ", error);
+        }
+    }
     return (
         <AnimatePresence>
             <motion.div
@@ -136,7 +159,7 @@ const Auth = ({ onClose }: AuthProps) => {
                                 }
                             </div>
 
-                            <motion.button
+                            <motion.button onClick={googleProvider}
                                 whileHover={{ y: -2, scale: 1.02 }}
                                 whileTap={{ y: 0 }}
                                 className='w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-white text-[#0a1a1d] font-semibold text-sm cursor-pointer border-none shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_40px_rgba(59,232,255,0.2)] transition-shadow'>

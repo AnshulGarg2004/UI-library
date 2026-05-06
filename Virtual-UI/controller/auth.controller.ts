@@ -14,6 +14,8 @@ export const googleAuth = async ({ name, email }: { name: string, email: string 
         }
 
         let token = await genToken(user._id.toString());
+        console.log("Token: ", token);
+        
 
         const response = NextResponse.json({ success: true, user, message: "User authenticated successfully" }, { status: 200 });
 
