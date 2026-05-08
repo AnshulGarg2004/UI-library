@@ -1,7 +1,12 @@
 import axios from "axios";
 import { NextResponse } from "next/server"
 
-export const fetchAi = async (message : string) => {
+interface fetchAIProps {
+    role : string;
+    content : string;
+}
+
+export const fetchAi = async (message : fetchAIProps[]) => {
     try {
         if(!message || !Array.isArray(message)  || message.length == 0) {
             return NextResponse.json({success : false, message : "Message is invalid"}, {status :500});

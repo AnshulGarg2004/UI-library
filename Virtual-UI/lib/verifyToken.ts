@@ -6,8 +6,6 @@ const verifyToken = async (token : string) => {
         console.log("decoded not geting");
         
     }
-
-    // console.log("decoded : ", decoded);
     return decoded;
 
 }

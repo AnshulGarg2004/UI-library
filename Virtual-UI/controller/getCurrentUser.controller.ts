@@ -25,7 +25,6 @@ const getCurrentUser = async () => {
         }
         
         await connectDb();
-        console.log("qwaesdfgx");
         
         const user = await User.findById(userId);
     
@@ -34,7 +33,7 @@ const getCurrentUser = async () => {
             
             return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
         }
-        return NextResponse.json({ success: true, user, message : "Current user fetched successfully" }, { status: 200 });
+        return NextResponse.json({ success: true, user : user, message : "Current user fetched successfully" }, { status: 200 });
         
     } catch (error) {
         return NextResponse.json({ success: false, message: "Invalid token in catch" }, { status: 401 });

@@ -21,7 +21,6 @@ import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion'
 import { Iuser } from '@/models/user.model';
 import { useRouter } from 'next/navigation';
-import { nav } from 'framer-motion/client';
 
 const getLetter = (name: string) => {
   if (!name) {
@@ -145,7 +144,6 @@ const Home = () => {
       setShowAuth(true);
     }
   }
-
   return (
     <div className='min-h-screen bg-[#030b0d] text-white overflow-x-hidden' style={{ fontFamily: " 'DM sans', ;sans-serif" }}>
       <nav className='sticky top-0 z-40 flex items-center justify-between px-4 sm:px-8 lg:px-10 py-4 border-b border-white/5 bg-[#030b0d]/85 backdrop-blur-md'>
