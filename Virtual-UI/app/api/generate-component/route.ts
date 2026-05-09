@@ -5,9 +5,10 @@ export const POST = async (req : NextRequest) => {
     const {prompt} = await req.json();
     try {
         const result = await generateComponent(prompt);
-        console.log("result from gen controller: ", result);
+        const resultData = await result.json();
+        console.log("result from gen controller: ", resultData);
         
-        return NextResponse.json({ success: true, message: "Component generated successfully", parsed: result }, { status: 200 });
+        return NextResponse.json({ success: true, message: "Component generated successfully", parsed: resultData.parsed, remainingCredits: resultData.remainingCredits }, { status: 200 });
     } catch (error) {
         console.log("Error generating component:", error);
         return NextResponse.json({ success: false, message: "Failed to generate component" }, { status: 500 });

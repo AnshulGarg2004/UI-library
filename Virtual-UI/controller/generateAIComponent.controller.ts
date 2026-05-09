@@ -143,6 +143,7 @@ Do NOT add explanation.`
     try {
       const clean = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
       parsed = JSON.parse(clean);
+      console.log("Parsed AI response: ", parsed);
     } catch (error) {
       console.log("Ai response: ", aiContent);
 
@@ -153,7 +154,7 @@ Do NOT add explanation.`
       user.aiCredits -= 50;
       await user.save();
     }
-
+    console.log("Parsed AI response in nextres: ", parsed);
     return NextResponse.json({ success: true, message: "Component generated successfully", parsed, remainingCredits: user.role === "user" ? user.aiCredits : null }, { status: 200 });
 
   } catch (error: any) {

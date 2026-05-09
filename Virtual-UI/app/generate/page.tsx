@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from "framer-motion"
-import { FiCpu, FiPlus, FiZap, FiAlertCircle, FiArrowRight, FiLoader, FiCheck } from 'react-icons/fi'
+import { FiCpu, FiPlus, FiZap, FiAlertCircle, FiArrowRight, FiLoader, FiCheck, FiLayers, FiEye, FiCode } from 'react-icons/fi'
 import axios from 'axios'
 import { Iuser } from '@/models/user.model'
 import { useRouter } from 'next/navigation'
@@ -9,15 +9,16 @@ import Toast, { ToastProps } from '../components/toast'
 import LivePreview from '../components/live-preview'
 
 interface GenerateProps {
-    code_jsx : string;
-    code_tsx : string;
-    name : string;
-    props : [string];
+    code_jsx: string;
+    code_tsx: string;
+    name: string;
+    props: [string];
 }
 
 const Generate = () => {
 
     const [user, setUser] = useState<Iuser | null>(null);
+    const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
     const lowCredits = (user?.aiCredits ?? 0) < 50;
     const [prompt, setPrompt] = useState<string>("");
     const [generated, setgenerated] = useState<GenerateProps | null>(null);
@@ -25,8 +26,8 @@ const Generate = () => {
     const [toast, setToast] = useState<ToastProps | null>(null);
     const router = useRouter();
 
-    const showToast = (message : string, type : "info" | "success" | "error") => {
-        setToast({message, type});
+    const showToast = (message: string, type: "info" | "success" | "error") => {
+        setToast({ message, type });
 
         setTimeout(() => {
             setToast(null);
@@ -34,13 +35,13 @@ const Generate = () => {
     }
 
     const handleGenearte = async () => {
-        if(!prompt.trim() || lowCredits) return;
+        if (!prompt.trim() || lowCredits) return;
 
         setgenerated(null);
         setGenerating(true);
 
         try {
-            const response = await axios.post('/api/generate-component', {prompt}, {withCredentials : true});
+            const response = await axios.post('/api/generate-component', { prompt }, { withCredentials: true });
             console.log("Data from geerate: ", response);
             setgenerated(response.data.parsed);
             if (typeof response.data.remainingCredits === 'number') {
@@ -56,8 +57,8 @@ const Generate = () => {
         }
     }
 
-    const handleKeyDown = (e : React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
             handleGenearte();
         }
     }
@@ -171,7 +172,7 @@ const Generate = () => {
                     <div className='flex items-start gap-3 p-4'>
                         <FiZap className='text-indigo-400 mt-1 shrink-0' size={20} />
                         <textarea
-                        onKeyDown={handleKeyDown}
+                            onKeyDown={handleKeyDown}
                             onChange={(e) => setPrompt(e.target.value)}
                             value={prompt}
                             placeholder={lowCredits ? "Not enough credits to generate..." : "A glassmorphism pricing card with a toggle for monthly/annual billing..."}
@@ -184,7 +185,7 @@ const Generate = () => {
                     <div className='flex items-center justify-between px-4 pb-3 w-full'>
                         <span className='text-xs text-white/20'>Ctrl + Enter to generate</span>
                         <motion.button
-                        onClick={handleGenearte}
+                            onClick={handleGenearte}
                             whileTap={{ scale: 0.97 }}
                             disabled={lowCredits || !prompt.trim() || generating}
                             className='flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all'
@@ -211,46 +212,124 @@ const Generate = () => {
                     </div>
 
                 </motion.div>
+
+                {generated && (
+                    <AnimatePresence>
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4 }}
+                            exit={{ opacity: 0, y: 30 }}
+                            className='rounded-2xl overflow-hidden'
+                            style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)" }}
+                        >
+                            <div className=' flex items-center justify-between px-5 py-4 border-b ' style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                                <div className='flex items-center gap-3'>
+                                     <div className='w-8 flex items-center justify-center h-8 rounded-lg' style={{ background: "rgba(99, 02, 241, 0.2)" }}>
+                                        <FiLayers size={15} className=' text-indigo-400 ' />
+                                    </div>
+                                    <div>
+                                        <p className='text-sm font-semibold text-white'>{generated.name}</p>
+                                        <p className='text-xs text-white/30'>{
+                                            generated?.props?.length > 0 ? `Props: ${generated.props.join(", ")}` : "No props detected."
+                                        }</p>
+                                    </div>
+                                </div>
+
+                                <div className='flex gap-1 rounded-xl p-1' style={{ background: "rgba(0,0,0,0.3)" }}>
+                                    {["preview", "code"].map((tab) => (
+                                        <button
+                                            key={tab}
+                                            onClick={() => setActiveTab(tab as "preview" | "code")}
+                                            className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs  font-medium transition-all capitalize border-none cursor-pointer'
+                                            style={{
+                                                background: activeTab === tab ? "rgba(99,102,241,0.5)" : "transparent",
+                                                color: activeTab === tab ? "#fff" : "rgba(255,255,255,0.4)",
+                                            }}
+                                        >
+                                            {tab === "preview" ? <FiEye size={12} /> : <FiCode size={12} />}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className='p-5'>
+                                <AnimatePresence mode='wait'>
+                                    {activeTab === "preview" ? (
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            key="preview"
+
+                                        >
+                                            {
+                                                    generated?.code_jsx && (
+                                                        <LivePreview code={generated.code_jsx} />
+                                                )
+                                            }
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div className='rounded-xl overflow-auto'
+                                            style={{
+                                                maxHeight: "340px",
+                                                background: "#0d1117", border: "1px solid rgba(255,255,255,0.06)"
+                                            }}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            key="code"
+
+                                        >
+                                            <pre className='p-5 text-xs leading-relaxed font-mono text-green-300 whitespace-pre-wrap'>
+                                                {generated.code_tsx}
+                                            </pre>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                )}
             </div>
 
-            {generated?.code_jsx && <LivePreview code={generated.code_jsx} />}
 
-           {!generated && !generating && (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className='text-center py-16'
-            >
-                <div className='w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4' style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)' }}>
-                    <FiCpu size={28} className='text-indigo-400' />
-                </div>
-                <p className='text-white/20 text-sm'>Describe your component above and hit Generate</p>
-            </motion.div>
-           )}
+            {!generated && !generating && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className='text-center py-16'
+                >
+                    <div className='w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4' style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)' }}>
+                        <FiCpu size={28} className='text-indigo-400' />
+                    </div>
+                    <p className='text-white/20 text-sm'>Describe your component above and hit Generate</p>
+                </motion.div>
+            )}
 
-           {generating && (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className='text-center py-16'
-            >
-                <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, ease: 'linear', duration: 1 }}
-                style={{borderTopColor : "#6366f1", borderRightColor : "#06b6d4"}} className='w-14 h-14 rounded-full border-2 border-transparent mx-auto mb-4'
-                />
-                    
-                <p className='text-white/20 text-sm'>AI is crafting your component</p>
-            </motion.div>
-           )}
+            {generating && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className='text-center py-16'
+                >
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, ease: 'linear', duration: 1 }}
+                        style={{ borderTopColor: "#6366f1", borderRightColor: "#06b6d4" }} className='w-14 h-14 rounded-full border-2 border-transparent mx-auto mb-4'
+                    />
 
-           {toast && (
-            <AnimatePresence>
-                <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
-            </AnimatePresence>
-           )}
-            
+                    <p className='text-white/20 text-sm'>AI is crafting your component</p>
+                </motion.div>
+            )}
+
+            {toast && (
+                <AnimatePresence>
+                    <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+                </AnimatePresence>
+            )}
+
         </div>
     )
 }

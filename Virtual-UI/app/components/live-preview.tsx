@@ -59,7 +59,7 @@ const LiveComponentPreview = ({ code }: LivePreviewProps) => {
           <LiveProvider
             noInline
             key={refreshKey}
-            scope={{React, useEffect , useState, useRef, useMemo, useCallback}}
+            scope={{React, useEffect, useState, useRef, useMemo, useCallback}}
             code={wrappedCode}
 >
           <motion.div
