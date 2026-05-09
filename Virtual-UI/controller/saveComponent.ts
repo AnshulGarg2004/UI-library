@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import { execSync } from "child_process";
 
-export const saveComponent = async ({ name, code, props }: Partial<Icomponent>) => {
+export const saveComponent = async ({ name, code_jsx, code_tsx, props }: Partial<Icomponent>) => {
     try {
         await connectDb();
 
@@ -36,7 +36,8 @@ export const saveComponent = async ({ name, code, props }: Partial<Icomponent>) 
 
         const component = await Components.create({
             name,
-            code,
+            code_jsx,
+            code_tsx,
             props,
             owner : user._id,
         });

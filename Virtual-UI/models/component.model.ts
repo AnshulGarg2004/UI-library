@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 export interface Icomponent  {
     npmPackage : string;
     name : string;
-    code : string;
+    code_jsx : string;
+    code_tsx : string;
     props : [string];
     owner : mongoose.Schema.Types.ObjectId;
     visibility : string;
@@ -14,7 +15,11 @@ const componentSchema = new mongoose.Schema<Icomponent>({
         type : String
     },
 
-    code : {
+    code_jsx : {
+        type : String
+    },
+
+    code_tsx : {
         type : String
     },
 

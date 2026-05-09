@@ -20,6 +20,7 @@ const Generate = () => {
 
     const [user, setUser] = useState<Iuser | null>(null);
     const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+    const [codeView, setCodeView] = useState<"jsx" | "tsx">("tsx");
     const lowCredits = (user?.aiCredits ?? 0) < 50;
     const [prompt, setPrompt] = useState<string>("");
     const [generated, setgenerated] = useState<GenerateProps | null>(null);
@@ -93,13 +94,13 @@ const Generate = () => {
         try {
             const response = await axios.post('/api/save-component', {
                 name : generated.name,
-                code : generated.code_tsx,
+                code_jsx : generated.code_jsx,
+                code_tsx : generated.code_tsx,
                 props : generated.props
             }, {withCredentials : true});
 
             console.log("Response from save component: ", response);
-            setSaveComponentId(response.data.resp.componentId);
-
+            setSaveComponentId(response.data.responseData.component._id);
             showToast("Component saved successfully!", "success");
             
         } catch (error) {
@@ -290,20 +291,41 @@ const Generate = () => {
                                     </div>
                                 </div>
 
-                                <div className='flex gap-1 rounded-xl p-1' style={{ background: "rgba(0,0,0,0.3)" }}>
-                                    {["preview", "code"].map((tab) => (
+                                <div className='flex items-center gap-2 rounded-xl p-1' style={{ background: "rgba(0,0,0,0.3)" }}>
+                                    {[
+                                        { key: "preview", icon: <FiEye size={12} />  },
+                                        { key: "code", icon: <FiCode size={12} /> },
+                                    ].map((tab) => (
                                         <button
-                                            key={tab}
-                                            onClick={() => setActiveTab(tab as "preview" | "code")}
-                                            className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs  font-medium transition-all capitalize border-none cursor-pointer'
+                                            key={tab.key}
+                                            onClick={() => setActiveTab(tab.key as "preview" | "code")}
+                                            className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize border-none cursor-pointer'
                                             style={{
-                                                background: activeTab === tab ? "rgba(99,102,241,0.5)" : "transparent",
-                                                color: activeTab === tab ? "#fff" : "rgba(255,255,255,0.4)",
+                                                background: activeTab === tab.key ? "rgba(99,102,241,0.5)" : "transparent",
+                                                color: activeTab === tab.key ? "#fff" : "rgba(255,255,255,0.4)",
                                             }}
                                         >
-                                            {tab === "preview" ? <FiEye size={12} /> : <FiCode size={12} />}
+                                            {tab.icon}
                                         </button>
                                     ))}
+
+                                    {activeTab === "code" && (
+                                        <div className='ml-2 flex items-center gap-1 rounded-xl p-1' style={{ background: "rgba(255,255,255,0.06)" }}>
+                                            {(["tsx", "jsx"] as const).map((view) => (
+                                                <button
+                                                    key={view}
+                                                    onClick={() => setCodeView(view)}
+                                                    className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all uppercase border-none cursor-pointer'
+                                                    style={{
+                                                        background: codeView === view ? "rgba(99,102,241,0.6)" : "transparent",
+                                                        color: codeView === view ? "#fff" : "rgba(255,255,255,0.45)",
+                                                    }}
+                                                >
+                                                    {view}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -324,20 +346,17 @@ const Generate = () => {
                                             }
                                         </motion.div>
                                     ) : (
-                                        <motion.div className='rounded-xl overflow-auto'
-                                            style={{
-                                                maxHeight: "340px",
-                                                background: "#0d1117", border: "1px solid rgba(255,255,255,0.06)"
-                                            }}
+                                        <motion.div
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             exit={{ opacity: 0 }}
                                             key="code"
-
                                         >
-                                            <pre className='p-5 text-xs leading-relaxed font-mono text-green-300 whitespace-pre-wrap'>
-                                                {generated.code_tsx}
-                                            </pre>
+                                            <div className='rounded-xl overflow-auto' style={{ maxHeight: "340px", background: "#0d1117", border: "1px solid rgba(255,255,255,0.06)" }}>
+                                                <pre className='p-5 text-xs leading-relaxed font-mono text-green-300 whitespace-pre-wrap'>
+                                                    {codeView === "tsx" ? generated.code_tsx : generated.code_jsx}
+                                                </pre>
+                                            </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -484,7 +503,7 @@ const Generate = () => {
                                                     className='flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all'
                                                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}
                                                 >
-                                                    <FiArrowLeft size={14} />
+                                                    <FiArrowLeft size={14} /> Back
                                                 </motion.button>
 
 
@@ -500,7 +519,7 @@ const Generate = () => {
                                                     className='flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all'
                                                     style={{ background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", boxShadow: "0 0 20px rgba(99,102,241,0.3)", color: "#fff" }}
                                                 >
-                                                    <FiRefreshCw size={14} />
+                                                    <FiRefreshCw size={14} /> Refresh
                                                 </motion.button>
 
                                                 <motion.button
