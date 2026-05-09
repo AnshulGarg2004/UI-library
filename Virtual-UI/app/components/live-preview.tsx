@@ -22,7 +22,9 @@ const LiveComponentPreview = ({ code }: LivePreviewProps) => {
     const match = sanitized.match(/const\s+([A-Z]\w+)/);
     const componentName = match ? match[1] : null;
 
-    const wrappedCode = componentName ? `${sanitized}\n\n(<${componentName} />)` : sanitized;
+    const wrappedCode = componentName
+      ? `${sanitized}\n\nrender(<${componentName} />)`
+      : sanitized;
 
     const refreshPreview = () => {
         setRefreshKey((prev) => prev + 1);
