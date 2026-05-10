@@ -8,6 +8,7 @@ export interface Icomponent  {
     props : [string];
     owner : mongoose.Schema.Types.ObjectId;
     visibility : string;
+    createdAt?: string | Date;
 }
 
 const componentSchema = new mongoose.Schema<Icomponent>({
