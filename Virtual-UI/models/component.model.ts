@@ -32,7 +32,7 @@ const componentSchema = new mongoose.Schema<Icomponent>({
     },
     visibility : {
         type : String,
-        enum :["private", "Public"],
+        enum :["private", "public"],
         default : "private"
     },
 

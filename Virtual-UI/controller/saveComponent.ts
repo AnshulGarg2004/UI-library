@@ -72,6 +72,8 @@ export const publishComponent = async (componentId : string) => {
             return NextResponse.json({success : false, message : "User not authorized to publish this component"}, {status : 403});
         }
 
+        console.log("going in virtual-ui-lib");
+        
 
         const libPath = path.join(process.cwd(), "../Virtual-UI-lib");
 
@@ -79,19 +81,16 @@ export const publishComponent = async (componentId : string) => {
         const componentFileJsx = path.join(componentDir, `${component.name}.jsx`);
         const ComponentFileTsx = path.join(componentDir, `${component.name}.tsx`);
 
+        const indexFile = path.join(libPath, "src", "index.ts");
 
-
-
-        const indexFile = path.join(componentDir, "src/index.js");
-
-        if(fs.existsSync(componentDir)) {
+        if(!fs.existsSync(componentDir)) {
             fs.mkdirSync(componentDir, {recursive : true});
         }
 
         fs.writeFileSync(componentFileJsx, component.code_jsx);
         fs.writeFileSync(ComponentFileTsx, component.code_tsx);
 
-        const indexContent = fs.readFileSync(indexFile, "utf-8");
+        const indexContent = fs.existsSync(indexFile) ? fs.readFileSync(indexFile, "utf-8") : "";
 
         const exportLine = `export { ${component.name} } from  "./components/${component.name}/${component.name}"`;
 
@@ -103,7 +102,7 @@ export const publishComponent = async (componentId : string) => {
 
         const distPath = path.join(libPath, "dist");
 
-        if(!fs.existsSync(distPath)) {
+        if(fs.existsSync(distPath)) {
             fs.rmSync(distPath, {recursive : true, force : true});
         }
 
@@ -129,10 +128,15 @@ export const publishComponent = async (componentId : string) => {
             stdio : "inherit",
         });
 
-        component.visibility = "public";
-        component.npmPackage = "virtual-ui-lib";
-
-        await component.save();
+        await Components.updateOne(
+            { _id: component._id },
+            {
+                $set: {
+                    visibility: "public",
+                    npmPackage: "virtual-ui-lib",
+                },
+            }
+        );
 
         return NextResponse.json({success : true, message : "Component published successfully"}, {status : 200});
         

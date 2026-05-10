@@ -318,7 +318,7 @@ const Home = () => {
         >
           <div className='flex justify-center gap-2 sm:gap-3 bg-white/4 border border-white/10 rounded-xl px-4 py-3 sm:px-5 text-xs sm:text-sm font-mono w-full max-w-xs sm:max-w-fit'>
             <span className='text-[#3be8ff]/60'>$</span>
-            <span className='text-white/80 truncate'>npm install virtual-ui-lib </span>
+            <span className='text-white/80 truncate'>npm install zoup-ui </span>
             <button onClick={handleCopy} className='ml-1 text-white/30 hover:text-[#3be8ff] transition-colors cursor-pointer bg-transparent border-none shrink-0'>
               {copied ? <TbCheck size={16} className='text-[#3be8ff]' /> : <TbCopy size={16} />}
             </button>

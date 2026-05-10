@@ -7,6 +7,8 @@ import { Iuser } from '@/models/user.model'
 import { useRouter } from 'next/navigation'
 import Toast, { ToastProps } from '../components/toast'
 import LivePreview from '../components/live-preview'
+import { log } from 'console'
+import { NextResponse } from 'next/server'
 
 
 interface GenerateProps {
@@ -68,10 +70,15 @@ const Generate = () => {
 
         setPublishing(true);
         try {
+            console.log("Publishing component with id: ", saveComponentId);
             const response = await axios.post('/api/publish-component', {
                 componentId : saveComponentId
             }, {withCredentials : true});
             console.log("response from publish-component: ", response);
+
+            if (!response.data?.success) {
+                return NextResponse.json({ success: false, message: response.data?.message || "Failed to publish component" }, { status: 500 });
+            }
 
             setPublished(true);
             showToast("Component published to npm successfully!", "success");
