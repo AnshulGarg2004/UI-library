@@ -11,6 +11,7 @@ import { SiValorant } from 'react-icons/si'
 import { TbChevronLeft, TbLayoutDashboard, TbLogout, TbPackage, TbUsers, TbCode } from 'react-icons/tb';
 import { Icomponent } from '@/models/component.model';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import AddComponent from '../components/add-component';
 
 type navItemsProps = {
     id: string;
@@ -451,6 +452,20 @@ const Admin = () => {
                                         </div>
                                     ) } 
                                 </motion.div>
+                        </motion.div>
+
+
+                    )}
+
+                    {activeView === "add" && (
+                        <motion.div
+                        key="add"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{duration : 0.25}}
+                        >
+                            <AddComponent />
                         </motion.div>
                     )}
                 </AnimatePresence>

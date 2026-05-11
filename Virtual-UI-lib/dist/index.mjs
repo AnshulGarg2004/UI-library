@@ -359,9 +359,38 @@ var ProductCard = ({ title = "Product Title", description = "This is a sample pr
     }
   );
 };
+
+// src/components/DotLoader/DotLoader.tsx
+import { useState as useState3, useEffect, useRef } from "react";
+import { jsx as jsx5 } from "react/jsx-runtime";
+var DotLoader = ({ size = 12, color = "#6366f1", speed = 0.8 }) => {
+  const [activeDot, setActiveDot] = useState3(0);
+  const intervalRef = useRef(null);
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setActiveDot((prev) => (prev + 1) % 3);
+    }, speed * 300);
+    return () => clearInterval(intervalRef.current);
+  }, [speed]);
+  return /* @__PURE__ */ jsx5("div", { style: { display: "flex", alignItems: "center", gap: size / 2 }, children: Array.from({ length: 3 }).map((_, i) => /* @__PURE__ */ jsx5(
+    "div",
+    {
+      style: {
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        backgroundColor: color,
+        opacity: i === activeDot ? 1 : 0.4,
+        transition: "opacity 0.3s ease"
+      }
+    },
+    i
+  )) });
+};
 export {
   Button,
   Card,
+  DotLoader,
   ProductCard,
   ToastButton
 };

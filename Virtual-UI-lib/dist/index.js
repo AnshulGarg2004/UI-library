@@ -22,6 +22,7 @@ var index_exports = {};
 __export(index_exports, {
   Button: () => Button,
   Card: () => Card,
+  DotLoader: () => DotLoader,
   ProductCard: () => ProductCard,
   ToastButton: () => ToastButton
 });
@@ -388,10 +389,39 @@ var ProductCard = ({ title = "Product Title", description = "This is a sample pr
     }
   );
 };
+
+// src/components/DotLoader/DotLoader.tsx
+var import_react5 = require("react");
+var import_jsx_runtime5 = require("react/jsx-runtime");
+var DotLoader = ({ size = 12, color = "#6366f1", speed = 0.8 }) => {
+  const [activeDot, setActiveDot] = (0, import_react5.useState)(0);
+  const intervalRef = (0, import_react5.useRef)(null);
+  (0, import_react5.useEffect)(() => {
+    intervalRef.current = setInterval(() => {
+      setActiveDot((prev) => (prev + 1) % 3);
+    }, speed * 300);
+    return () => clearInterval(intervalRef.current);
+  }, [speed]);
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { display: "flex", alignItems: "center", gap: size / 2 }, children: Array.from({ length: 3 }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+    "div",
+    {
+      style: {
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        backgroundColor: color,
+        opacity: i === activeDot ? 1 : 0.4,
+        transition: "opacity 0.3s ease"
+      }
+    },
+    i
+  )) });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Button,
   Card,
+  DotLoader,
   ProductCard,
   ToastButton
 });
