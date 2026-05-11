@@ -100,9 +100,7 @@ const Admin = () => {
 
                 const componentResponse = await axios.get('/api/get-all-components', { withCredentials: true });
                 setComponents(componentResponse.data.components);
-                console.log("Components: ", components);
-
-
+                
             } catch (error) {
                 console.log("Error in fetching components: ", error);
 
@@ -110,7 +108,7 @@ const Admin = () => {
         }
         fetchComponents();
     }, [])
-
+    
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -187,6 +185,8 @@ const Admin = () => {
             try {
                 const resp = await axios.get('/api/logout', { withCredentials: true });
                 setUser(null);
+                setUsers([]);
+                setComponents([]);
                 router.push('/');
             } catch (error: any) {
                 console.log("error in logging out");

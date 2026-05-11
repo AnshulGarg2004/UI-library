@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface Icomponent  {
+    _id?: string | mongoose.Schema.Types.ObjectId;
     npmPackage : string;
     name : string;
     code_jsx : string;
