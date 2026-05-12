@@ -5,52 +5,8 @@ import { TbCheck, TbCopy, TbPackage } from 'react-icons/tb'
 import axios from 'axios'
 import type { Iuser } from '@/models/user.model'
 import { FaArrowLeft } from 'react-icons/fa'
+import CodeBlock from './code-block'
 
-const CopyButon = ({ text }: { text: string }) => {
-    const [copied, setCopied] = useState(false);
-
-    const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(text);
-            setCopied(true);
-            window.setTimeout(() => setCopied(false), 1500);
-        } catch (error) {
-            console.log('Failed to copy text:', error);
-        }
-    }
-    return (
-        <div
-            onClick={handleCopy}
-            className='flex items-center gap-1.5 text-[11px] text-white/30 hover:text-white/60 transition-colors bg-transparent border-none cursor-pointer px-2 py-1 rounded-lg hover:bg-white/4'
-        >
-            {copied ? <TbCheck size={13} className='text-[#3be8ff]' /> : <TbCopy size={13} />}
-            <span>{copied ? 'Copied' : 'Copy'}</span>
-        </div>
-    )
-}
-
-function CodeBlock({ code, lang = "jsx" }: { code: string, lang?: string }) {
-    return (
-        <div
-            className='rounded-xl overflow-hidden'
-            style={{
-                background: '#060f11',
-                border: '1px solid rgba(255,255,255,0.06)'
-            }}
-        >
-            <div className='flex items-center justify-between px-4 py-2 border-b border-white/5'>
-                <span className='text-[10px] text-white/25 font-mono uppercase tracking-widest'>
-                    {lang}
-                </span>
-                <CopyButon text={code} />
-            </div>
-
-            <pre className='max-h-105 overflow-auto px-4 py-4 text-left text-xs leading-6 text-white/75 font-mono'>
-                <code>{code}</code>
-            </pre>
-        </div>
-    )
-}
 
 const GuidedPanel = () => {
     const [user, setUser] = useState<Iuser | null>(null);

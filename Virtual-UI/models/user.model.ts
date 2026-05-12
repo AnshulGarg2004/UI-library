@@ -2,6 +2,7 @@ import mongoose  from "mongoose";
 
 export interface Iuser {
     name : string;
+    _id? : string;
     email : string,
     role : "user" | "admin";
     aiCredits : number;
