@@ -20,141 +20,20 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  Button: () => Button,
   Card: () => Card,
-  DotLoader: () => DotLoader,
+  NeonToggleButton: () => NeonToggleButton,
+  NiceCard: () => NiceCard,
+  PricingCard: () => PricingCard,
   ProductCard: () => ProductCard,
+  ThemeToggle: () => ThemeToggle,
   ToastButton: () => ToastButton
 });
 module.exports = __toCommonJS(index_exports);
 
-// src/components/Button/Button.tsx
+// src/components/Card/Card.tsx
 var import_react = require("react");
 var import_jsx_runtime = require("react/jsx-runtime");
 var variantClasses = {
-  primary: [
-    "bg-indigo-600 text-white border border-transparent",
-    "hover:bg-indigo-700 active:bg-indigo-800",
-    "focus-visible:ring-indigo-500",
-    "shadow-sm hover:shadow-md"
-  ].join(" "),
-  secondary: [
-    "bg-slate-100 text-slate-800 border border-slate-200",
-    "hover:bg-slate-200 active:bg-slate-300",
-    "focus-visible:ring-slate-400",
-    "shadow-sm hover:shadow-md"
-  ].join(" "),
-  outline: [
-    "bg-transparent text-indigo-600 border border-indigo-500",
-    "hover:bg-indigo-50 active:bg-indigo-100",
-    "focus-visible:ring-indigo-500"
-  ].join(" "),
-  ghost: [
-    "bg-transparent text-slate-700 border border-transparent",
-    "hover:bg-slate-100 active:bg-slate-200",
-    "focus-visible:ring-slate-400"
-  ].join(" ")
-};
-var sizeClasses = {
-  sm: "h-8 px-3 text-xs gap-1.5 rounded-md",
-  md: "h-10 px-4 text-sm gap-2 rounded-lg",
-  lg: "h-12 px-6 text-base gap-2.5 rounded-xl"
-};
-var iconSizeClasses = {
-  sm: "w-3.5 h-3.5",
-  md: "w-4 h-4",
-  lg: "w-5 h-5"
-};
-function cn(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-var Button = (0, import_react.forwardRef)(
-  ({
-    children,
-    onClick,
-    variant = "primary",
-    size = "md",
-    disabled = false,
-    fullWidth = false,
-    icon,
-    iconPosition = "left",
-    className,
-    type = "button",
-    ...rest
-  }, ref) => {
-    const hasIcon = Boolean(icon);
-    const hasChildren = Boolean(children);
-    const iconOnly = hasIcon && !hasChildren;
-    const baseClasses = [
-      // Layout
-      "inline-flex items-center justify-center font-medium",
-      "select-none whitespace-nowrap",
-      // Transition
-      "transition-all duration-150 ease-in-out",
-      // Focus ring
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-      // Disabled
-      "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
-      // Cursor
-      "cursor-pointer"
-    ].join(" ");
-    const iconOnlySizeOverride = {
-      sm: "w-8 px-0",
-      md: "w-10 px-0",
-      lg: "w-12 px-0"
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-      "button",
-      {
-        ref,
-        type,
-        disabled,
-        "aria-disabled": disabled,
-        onClick: disabled ? void 0 : onClick,
-        className: cn(
-          baseClasses,
-          variantClasses[variant],
-          sizeClasses[size],
-          iconOnly && iconOnlySizeOverride[size],
-          fullWidth && "w-full",
-          className
-        ),
-        ...rest,
-        children: [
-          hasIcon && iconPosition === "left" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "span",
-            {
-              className: cn(
-                "shrink-0 flex items-center justify-center",
-                iconSizeClasses[size]
-              ),
-              "aria-hidden": "true",
-              children: icon
-            }
-          ),
-          hasChildren && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "leading-none", children }),
-          hasIcon && iconPosition === "right" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "span",
-            {
-              className: cn(
-                "shrink-0 flex items-center justify-center",
-                iconSizeClasses[size]
-              ),
-              "aria-hidden": "true",
-              children: icon
-            }
-          )
-        ]
-      }
-    );
-  }
-);
-Button.displayName = "Button";
-
-// src/components/Card/Card.tsx
-var import_react2 = require("react");
-var import_jsx_runtime2 = require("react/jsx-runtime");
-var variantClasses2 = {
   elevated: [
     "bg-white border border-transparent",
     "shadow-sm hover:shadow-lg",
@@ -183,10 +62,10 @@ var headerPaddingClasses = {
   md: "px-4 py-3",
   lg: "px-6 py-4"
 };
-function cn2(...classes) {
+function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-var Card = (0, import_react2.forwardRef)(
+var Card = (0, import_react.forwardRef)(
   ({
     children,
     title,
@@ -215,9 +94,9 @@ var Card = (0, import_react2.forwardRef)(
       // Hoverable states
       hoverable && "hover:shadow-md"
     ].join(" ");
-    const containerClasses = cn2(
+    const containerClasses = cn(
       baseClasses,
-      variantClasses2[variant],
+      variantClasses[variant],
       fullWidth && "w-full",
       className
     );
@@ -227,7 +106,7 @@ var Card = (0, import_react2.forwardRef)(
         onClick?.();
       }
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
       "div",
       {
         ref,
@@ -238,24 +117,24 @@ var Card = (0, import_react2.forwardRef)(
         className: containerClasses,
         ...rest,
         children: [
-          hasHeader && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+          hasHeader && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
             "div",
             {
-              className: cn2(
+              className: cn(
                 "border-b border-slate-200 dark:border-slate-700",
                 headerPaddingClasses[padding]
               ),
               children: [
-                title && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-lg font-semibold text-slate-900 dark:text-white", children: title }),
-                subtitle && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "text-sm text-slate-500 dark:text-slate-400 mt-1", children: subtitle })
+                title && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { className: "text-lg font-semibold text-slate-900 dark:text-white", children: title }),
+                subtitle && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm text-slate-500 dark:text-slate-400 mt-1", children: subtitle })
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: paddingClasses[padding], children }),
-          hasFooter && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: paddingClasses[padding], children }),
+          hasFooter && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "div",
             {
-              className: cn2(
+              className: cn(
                 "border-t border-slate-200 dark:border-slate-700",
                 headerPaddingClasses[padding]
               ),
@@ -270,20 +149,20 @@ var Card = (0, import_react2.forwardRef)(
 Card.displayName = "Card";
 
 // src/components/ToastButton/ToastButton.tsx
-var import_react3 = require("react");
-var import_jsx_runtime3 = require("react/jsx-runtime");
+var import_react2 = require("react");
+var import_jsx_runtime2 = require("react/jsx-runtime");
 var ToastButton = ({ text = "Show Toast", onClick }) => {
-  const [isActive, setIsActive] = (0, import_react3.useState)(false);
+  const [isActive, setIsActive] = (0, import_react2.useState)(false);
   const handleClick = () => {
     setIsActive(true);
     setTimeout(() => setIsActive(false), 2e3);
     if (onClick) onClick();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { style: {
     position: "relative",
     width: "fit-content"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
       "button",
       {
         onClick: handleClick,
@@ -304,7 +183,7 @@ var ToastButton = ({ text = "Show Toast", onClick }) => {
         children: text
       }
     ),
-    isActive && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { style: {
+    isActive && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { style: {
       position: "absolute",
       top: "60px",
       left: "50%",
@@ -322,11 +201,11 @@ var ToastButton = ({ text = "Show Toast", onClick }) => {
 };
 
 // src/components/ProductCard/ProductCard.tsx
-var import_react4 = require("react");
-var import_jsx_runtime4 = require("react/jsx-runtime");
+var import_react3 = require("react");
+var import_jsx_runtime3 = require("react/jsx-runtime");
 var ProductCard = ({ title = "Product Title", description = "This is a sample product description.", price = 49.99, image = "https://via.placeholder.com/300", onClick }) => {
-  const [isHovered, setIsHovered] = (0, import_react4.useState)(false);
-  return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+  const [isHovered, setIsHovered] = (0, import_react3.useState)(false);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
     "div",
     {
       style: {
@@ -344,7 +223,7 @@ var ProductCard = ({ title = "Product Title", description = "This is a sample pr
       onMouseLeave: () => setIsHovered(false),
       onClick,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
           "img",
           {
             src: image,
@@ -357,15 +236,15 @@ var ProductCard = ({ title = "Product Title", description = "This is a sample pr
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { style: { padding: "16px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { style: { margin: "0", color: "#f8fafc", fontSize: "20px", fontWeight: "600" }, children: title }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { style: { margin: "8px 0", color: "#94a3b8", fontSize: "14px" }, children: description }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("span", { style: { color: "#6366f1", fontSize: "18px", fontWeight: "700" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { style: { padding: "16px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { style: { margin: "0", color: "#f8fafc", fontSize: "20px", fontWeight: "600" }, children: title }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { style: { margin: "8px 0", color: "#94a3b8", fontSize: "14px" }, children: description }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { style: { color: "#6366f1", fontSize: "18px", fontWeight: "700" }, children: [
               "$",
               price.toFixed(2)
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
               "button",
               {
                 style: {
@@ -390,38 +269,259 @@ var ProductCard = ({ title = "Product Title", description = "This is a sample pr
   );
 };
 
-// src/components/DotLoader/DotLoader.tsx
-var import_react5 = require("react");
+// src/components/NeonToggleButton/NeonToggleButton.tsx
+var import_react4 = require("react");
+var import_jsx_runtime4 = require("react/jsx-runtime");
+var NeonToggleButton = ({
+  activeColor = "#0ea5e9",
+  inactiveColor = "#1e293b",
+  initialActive = false,
+  onClick = () => {
+  }
+}) => {
+  const [isActive, setIsActive] = (0, import_react4.useState)(initialActive);
+  const handleClick = () => {
+    setIsActive(!isActive);
+    onClick();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "button",
+    {
+      onClick: handleClick,
+      style: {
+        position: "relative",
+        width: "80px",
+        height: "40px",
+        borderRadius: "20px",
+        border: "none",
+        cursor: "pointer",
+        background: isActive ? activeColor : inactiveColor,
+        boxShadow: isActive ? "0 0 10px " + alpha(activeColor, 0.8) : "none",
+        transition: "all 0.25s ease",
+        outline: "none"
+      },
+      onMouseEnter: (e) => {
+        e.currentTarget.style.transform = "scale(1.05)";
+      },
+      onMouseLeave: (e) => {
+        e.currentTarget.style.transform = "scale(1)";
+      },
+      children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            top: "4px",
+            left: isActive ? "44px" : "4px",
+            width: "32px",
+            height: "32px",
+            borderRadius: "16px",
+            background: "#ffffff",
+            transition: "all 0.25s ease"
+          }
+        }
+      )
+    }
+  );
+};
+var alpha = (hex, op) => {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return "rgba(" + r + "," + g + "," + b + "," + op + ")";
+};
+
+// src/components/PricingCard/PricingCard.tsx
 var import_jsx_runtime5 = require("react/jsx-runtime");
-var DotLoader = ({ size = 12, color = "#6366f1", speed = 0.8 }) => {
-  const [activeDot, setActiveDot] = (0, import_react5.useState)(0);
-  const intervalRef = (0, import_react5.useRef)(null);
-  (0, import_react5.useEffect)(() => {
-    intervalRef.current = setInterval(() => {
-      setActiveDot((prev) => (prev + 1) % 3);
-    }, speed * 300);
-    return () => clearInterval(intervalRef.current);
-  }, [speed]);
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { display: "flex", alignItems: "center", gap: size / 2 }, children: Array.from({ length: 3 }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+var PricingCard = ({ title = "Starter Plan", price = 19, features = ["Feature 1", "Feature 2", "Feature 3"], accent = "#6366f1", onClick = () => {
+} }) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
     "div",
     {
       style: {
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        backgroundColor: color,
-        opacity: i === activeDot ? 1 : 0.4,
-        transition: "opacity 0.3s ease"
-      }
-    },
-    i
-  )) });
+        backgroundColor: "#0f172a",
+        borderRadius: "20px",
+        padding: "32px",
+        boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        width: "280px",
+        transition: "all 0.25s ease",
+        cursor: "pointer",
+        position: "relative",
+        overflow: "hidden"
+      },
+      onClick,
+      onMouseEnter: (e) => {
+        e.currentTarget.style.transform = "translateY(-4px) scale(1.01)";
+        e.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.5)";
+      },
+      onMouseLeave: (e) => {
+        e.currentTarget.style.transform = "none";
+        e.currentTarget.style.boxShadow = "0 10px 40px rgba(0,0,0,0.4)";
+      },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          "h2",
+          {
+            style: {
+              color: "#fff",
+              fontSize: "24px",
+              fontWeight: "600",
+              marginBottom: "16px",
+              fontFamily: "system-ui, -apple-system, sans-serif"
+            },
+            children: title
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+          "div",
+          {
+            style: {
+              color: accent,
+              fontSize: "48px",
+              fontWeight: "700",
+              marginBottom: "24px",
+              fontFamily: "system-ui, -apple-system, sans-serif"
+            },
+            children: [
+              "$",
+              price,
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { fontSize: "16px", color: "rgba(255,255,255,0.6)" }, children: "/mo" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          "ul",
+          {
+            style: {
+              listStyle: "none",
+              padding: "0",
+              marginBottom: "32px"
+            },
+            children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+              "li",
+              {
+                style: {
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: "14px",
+                  padding: "8px 0",
+                  borderBottom: "1px solid rgba(255,255,255,0.08)",
+                  fontFamily: "system-ui, -apple-system, sans-serif"
+                },
+                children: feature
+              },
+              index
+            ))
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          "button",
+          {
+            style: {
+              backgroundColor: accent,
+              color: "#fff",
+              border: "none",
+              borderRadius: "12px",
+              padding: "16px 32px",
+              fontSize: "16px",
+              fontWeight: "600",
+              width: "100%",
+              cursor: "pointer",
+              transition: "all 0.25s ease",
+              fontFamily: "system-ui, -apple-system, sans-serif"
+            },
+            onMouseEnter: (e) => e.currentTarget.style.opacity = "0.9",
+            onMouseLeave: (e) => e.currentTarget.style.opacity = "1",
+            children: "Get Started"
+          }
+        )
+      ]
+    }
+  );
+};
+
+// src/components/NiceCard/NiceCard.tsx
+var import_react5 = require("react");
+var import_jsx_runtime6 = require("react/jsx-runtime");
+var NiceCard = ({ title = "Card Title", description = "This is a nice card component.", accent = "#6366f1" }) => {
+  const [hovered, setHovered] = (0, import_react5.useState)(false);
+  const alpha2 = (hex, op) => {
+    const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + op + ")";
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+    "div",
+    {
+      style: {
+        backgroundColor: "#1e293b",
+        borderRadius: "16px",
+        padding: "24px",
+        border: "1px solid rgba(255,255,255,0.08)",
+        boxShadow: hovered ? "0 20px 50px " + alpha2(accent, 0.3) : "0 10px 40px rgba(0,0,0,0.4)",
+        transform: hovered ? "translateY(-4px) scale(1.01)" : "none",
+        transition: "all 0.25s ease",
+        maxWidth: "400px",
+        width: "100%"
+      },
+      onMouseEnter: () => setHovered(true),
+      onMouseLeave: () => setHovered(false),
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h2", { style: { color: "#ffffff", fontSize: "20px", fontWeight: "600", marginBottom: "12px" }, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { style: { color: "#94a3b8", fontSize: "14px", lineHeight: "1.5" }, children: description })
+      ]
+    }
+  );
+};
+
+// src/components/ThemeToggle/ThemeToggle.tsx
+var import_react6 = require("react");
+var import_jsx_runtime7 = require("react/jsx-runtime");
+var ThemeToggle = ({ theme = "dark", onChange = () => {
+} }) => {
+  const [currentTheme, setCurrentTheme] = (0, import_react6.useState)(theme);
+  const toggleTheme = (0, import_react6.useCallback)(() => {
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setCurrentTheme(newTheme);
+    onChange(newTheme);
+  }, [currentTheme, onChange]);
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    "div",
+    {
+      onClick: toggleTheme,
+      style: {
+        width: 50,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: currentTheme === "dark" ? "#020617" : "#ffffff",
+        border: "1px solid " + (currentTheme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"),
+        position: "relative",
+        cursor: "pointer",
+        transition: "all 0.25s ease",
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+      },
+      children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        "div",
+        {
+          style: {
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            backgroundColor: currentTheme === "dark" ? "#1e293b" : "#f3f4f6",
+            position: "absolute",
+            top: 2,
+            left: currentTheme === "dark" ? 2 : 24,
+            transition: "all 0.25s ease"
+          }
+        }
+      )
+    }
+  );
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Button,
   Card,
-  DotLoader,
+  NeonToggleButton,
+  NiceCard,
+  PricingCard,
   ProductCard,
+  ThemeToggle,
   ToastButton
 });

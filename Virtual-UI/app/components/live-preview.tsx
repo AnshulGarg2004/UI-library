@@ -10,6 +10,11 @@ type LivePreviewProps = {
 
 const LiveComponentPreview = ({ code }: LivePreviewProps) => {
     const [refreshKey, setRefreshKey] = useState(0);
+    
+    if (!code) {
+      return <div className='text-white/40 text-sm py-8'>No code to preview</div>;
+    }
+    
   let sanitized = code
     .replace(/import\s+.*?from\s+['"].*?['"];?/g, "")
     .replace(/export\s+/g, "");

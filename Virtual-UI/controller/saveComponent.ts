@@ -92,7 +92,7 @@ export const publishComponent = async (componentId : string) => {
 
         const indexContent = fs.existsSync(indexFile) ? fs.readFileSync(indexFile, "utf-8") : "";
 
-        const exportLine = `export { ${component.name} } from  "./components/${component.name}/${component.name}"`;
+        const exportLine = `export { ${component.name} } from "./components/${component.name}/${component.name}";`;
 
         if(!indexContent.includes(exportLine)) {
             fs.appendFileSync(indexFile, `\n${exportLine}`);
@@ -126,6 +126,7 @@ export const publishComponent = async (componentId : string) => {
         execSync("npm publish --access public", {
             cwd : libPath,
             stdio : "inherit",
+            env: { ...process.env, NPM_ACCESS_TOKEN: process.env.NPM_ACCESS_TOKEN }
         });
 
         await Components.updateOne(
@@ -133,7 +134,7 @@ export const publishComponent = async (componentId : string) => {
             {
                 $set: {
                     visibility: "public",
-                    npmPackage: "virtual-ui-lib",
+                    npmPackage: "zoup-ui",
                 },
             }
         );
