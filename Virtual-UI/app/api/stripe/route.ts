@@ -19,11 +19,19 @@ export const POST = async (req: NextRequest) => {
         const result = await stripeHandler({userId, amount});
         console.log("response from stirpe controller: ", result);
 
+        if (!result?.url) {
+            return NextResponse.json({ success: false, message: "Stripe URL not generated" }, { status: 500 });
+        }
+
         return NextResponse.json({ success: true, message: "Stripe session created successfully", url : result.url }, { status: 200 });
         
     } catch (error: any) {
         console.log("Error in stripe: ", error.message);
-        return NextResponse.json({ success: false, message: "Error in creating stripe session" }, { status: 500 });
+        if (error?.message === "Invalid pricing amount") {
+            return NextResponse.json({ success: false, message: "Invalid amount selected" }, { status: 400 });
+        }
+
+        return NextResponse.json({ success: false, message: error?.message || "Error in creating stripe session" }, { status: 500 });
 
     }
 }

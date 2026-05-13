@@ -1,15 +1,20 @@
 import connectDb from "@/lib/connectDB"
 import stripe from "@/lib/stripe";
-import { NextResponse } from "next/server";
 
 const CREDIT_MAP = {
-    200: 99,
+    99: 200,
 } as Record<number, number>;
 
 const stripeHandler = async ({ userId, amount }: { userId: string, amount: number }) => {
 
     try {
         await connectDb();
+
+        const credits = CREDIT_MAP[amount];
+
+        if (!credits) {
+            throw new Error("Invalid pricing amount");
+        }
 
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
@@ -21,7 +26,7 @@ const stripeHandler = async ({ userId, amount }: { userId: string, amount: numbe
                     price_data: {
                         currency: "usd",
                         product_data: {
-                            name: `${CREDIT_MAP[amount]} Credits `
+                            name: `${credits} Credits `
                         },
                         unit_amount: amount * 100
 
@@ -31,14 +36,18 @@ const stripeHandler = async ({ userId, amount }: { userId: string, amount: numbe
             ],
             metadata: {
                 userId,
-                credits: CREDIT_MAP[amount]
+                credits
             }
         })
 
-        return NextResponse.json({ success: true, message: "Stripe session created successfully", url: session.url }, { status: 200 });
+        if (!session.url) {
+            throw new Error("Stripe session URL was empty");
+        }
+
+        return { url: session.url };
     } catch (error: any) {
         console.log("Error in stripeHandler:", error.message);
-        return NextResponse.json({ success: false, message: "Error in creating stripe session" }, { status: 500 });
+        throw error;
     }
 }
 

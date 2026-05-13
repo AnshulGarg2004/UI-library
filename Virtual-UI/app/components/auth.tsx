@@ -49,7 +49,7 @@ const Auth = ({ onClose }: AuthProps) => {
             let name = user.displayName;
             let email = user.email;
 
-            const result = await axios.post('api/sign-in', {name, email}, {
+            const result = await axios.post('/api/sign-in', {name, email}, {
                 withCredentials : true,
             });
 

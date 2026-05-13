@@ -21,9 +21,10 @@ export const googleAuth = async ({ name, email }: { name: string, email: string 
 
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
-            maxAge: 24 * 60 * 60 * 7 * 1000,
+            secure : true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
         });
 
         return response;
