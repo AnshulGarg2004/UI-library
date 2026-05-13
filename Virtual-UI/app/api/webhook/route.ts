@@ -16,7 +16,13 @@ export const POST = async (req: NextRequest) => {
     }
     try {
 
-        event = stripe.webhooks.constructEvent(payload, sign, process.env.STRIPE_WEBHOOK_SECRET!);
+        const secret = process.env.STRIPE_WEBHOOK_SECRET;
+        if (!secret) {
+            console.error('STRIPE_WEBHOOK_SECRET is not set');
+            return NextResponse.json({ success: false, message: 'Webhook secret not configured' }, { status: 500 });
+        }
+
+        event = stripe.webhooks.constructEvent(payload, sign, secret);
     } catch (error) {
         console.log("Error in webhook: ", error);
         return NextResponse.json({ success: false, message: "Error in webhook" }, { status: 500 });
@@ -30,14 +36,24 @@ export const POST = async (req: NextRequest) => {
         const plan = session?.metadata?.plan;
 
         if (!userId || Number.isNaN(credits)) {
+            console.warn('Invalid webhook metadata', { userId, credits: session?.metadata });
             return NextResponse.json({ success: false, message: "Invalid webhook metadata" }, { status: 400 });
         }
 
-        await User.findByIdAndUpdate(userId, {
-            $inc: { aiCredits: credits },
-        }, { new: true });
+        const updated = await User.findByIdAndUpdate(userId, { $inc: { aiCredits: credits } }, { new: true });
+
+        if (!updated) {
+            console.warn('Webhook: user not found', userId);
+            return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+        }
+        console.log('Webhook: credits updated for user', userId, 'newCredits:', updated.credits);
 
     }
 
     return NextResponse.json({ success: true, received: true, message: "Webhook processed" }, { status: 200 });
+}
+
+// Respond to GET so test pings or accidental GETs don't return 405
+export const GET = async () => {
+    return NextResponse.json({ success: true, message: 'Webhook endpoint is live' }, { status: 200 });
 }
