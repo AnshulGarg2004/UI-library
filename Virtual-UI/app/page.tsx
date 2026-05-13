@@ -42,7 +42,7 @@ const features: Feature[] = [
   {
     icon: TbLayout,
     title: "Prebuilt UI Components",
-    text: "Install VirtualUI; and use ready-made, production-grade components instantly."
+    text: "Install ZoupUI; and use ready-made, production-grade components instantly."
   },
   {
     icon: HiSparkles,
@@ -62,7 +62,7 @@ const features: Feature[] = [
   {
     icon: TbBrandNpm,
     title: "NPM Library",
-    text: "Import VirtualUI components with a simple npm install command."
+    text: "Import ZoupUI components with a simple npm install command."
   },
   {
     icon: TbPlayerPlay,
@@ -81,7 +81,7 @@ const steps: Step[] = [
   {
     n: "01",
     title: "Install Library",
-    text: "npm install virtual-ui-lib to access all prebuilt UI components."
+    text: "npm install zoup-ui to access all prebuilt UI components."
   },
   {
     n: "02",
@@ -114,7 +114,7 @@ const Home = () => {
   const router = useRouter();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("npm install virtual-ui-lib");
+    navigator.clipboard.writeText("npm install zoup-ui");
     setCopied(true);
 
     setTimeout(() => {
@@ -211,11 +211,11 @@ const Home = () => {
             <div className='w-8 h-8 rounded-xl bg-linear-to-br from-[#3be8ff] to-[#0ab5d4] flex items-center justify-center shadow-[0_0_14px_rgba(59,232,255,0.4)]'>
               <SiValorant size={15} color="#051c20" />
             </div>
-            <span className='text-lg font-bold tracking-tight' style={{ fontFamily: "'Syne',sans-serif" }}>VirtualUI</span>
+            <span className='text-lg font-bold tracking-tight' style={{ fontFamily: "'Syne',sans-serif" }}>ZoupUI</span>
           </div>
 
           <div className=' hidden md:flex items-center gap-6 lg:gap-8 text-sm text-white/50'>
-            <button className='duration-200 px-6 py-2.5 border border-white/15 rounded-xl text-sm text-white/70 hover:text-white hover:border-white/25 transition-all cursor-pointer bg-transparent'>Components</button>
+            <button onClick={() => {router.push('/my-components')}} className='duration-200 px-6 py-2.5 border border-white/15 rounded-xl text-sm text-white/70 hover:text-white hover:border-white/25 transition-all cursor-pointer bg-transparent'>Components</button>
             {user ? (
               <div className='relative'>
                 <motion.button onClick={() => setProfileOpen(!profileOpen)}
@@ -243,7 +243,7 @@ const Home = () => {
                         </div>
 
                         <div className='py-1.5'>
-                          <button className='w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/60 hover:text-white hover:bg-white/4 transition-colors cursor-pointer bg-transparent border-none text-left'>
+                          <button onClick={() => {router.push('/my-components')}} className='w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/60 hover:text-white hover:bg-white/4 transition-colors cursor-pointer bg-transparent border-none text-left'>
                             <TbComponents size={16} className='text-[#3be8ff]/70 ' /> My Components
                           </button>
                         </div>
@@ -291,7 +291,7 @@ const Home = () => {
               transition={{ duration: 0.25 }}
               className='md:hidden sticky top-16.25 z-30 bg-[#030b0d]/95 backdrop-blur-md border-b border-white/5 px-4 py-4 flex flex-col gap-3'
             >
-              <button className='w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/4 transition-colors cursor-pointer bg-transparent border-none text-left'>
+              <button onClick={() => {router.push('/components')}} className='w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/4 transition-colors cursor-pointer bg-transparent border-none text-left'>
                 <TbComponents size={16} className='text-[#3be8ff]/70' />
                 Components
               </button>
@@ -365,7 +365,7 @@ const Home = () => {
             transition={{ delay: 0.2, duration: 0.6 }}
             className='text-white/50 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-8 sm:mb-10 font-light px-2'
           >
-            Use prebuilt VirtualUI components or generate custom ones with AI.
+            Use prebuilt Zoup UI components or generate custom ones with AI.
             <br />
             Copy clean JSX directly into your project in seconds.
           </motion.p>
@@ -392,6 +392,7 @@ const Home = () => {
             className='flex flex-col sm:flex-row justify-center gap-3 px-4 sm:px-0'
           >
             <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}
+              onClick={handlegenerateClick}
               className='flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 bg-white text-[#030b0d] rounded-xl font-semibold text-sm cursor-pointer border-none shadow-[0_4px_24px_rgba(255,255,255,0.1)] hover:shadow-[0_6px_32px_rgba(255,255,255,0.18)] transition-shadow w-full sm:w-auto'
             >
               Get Started
@@ -416,49 +417,49 @@ const Home = () => {
               <div className='w-2.5 h-2.5 rounded-full bg-[#ff5f57]'></div>
               <div className='w-2.5 h-2.5 rounded-full bg-[#ffbd2e]'></div>
               <div className='w-2.5 h-2.5 rounded-full bg-[#28c840]'></div>
-              <span>App.jsx</span>
+              <span>App.tsx</span>
             </div>
 
             <div className='font-mono text-[11px] sm:text-[12.5px] leading-6 min-w-70 space-y-0.5'>
               <p>
                 <span className='text-[#3be8ff]/60'>import </span>
-                <span className='text-white/80'>{"{ Button, card }"}</span>
+                <span className='text-white/80'>{"{ Button, Card }"}</span>
                 <span className='text-[#3be8ff]/60'> from </span>
-                <span className='text-[#aaff80]'>'virtual-ui-lib'</span>
+                <span className='text-[#aaff80]'>'zoup-ui'</span>
                 <span className='text-white/30'>;</span>
               </p>
               <p>{" "}</p>
               <p>
-                <span className='text-[#3be8ff]/60'>export default App</span>
-                <span className='text-[#ffd580]/80'>() </span>
-                <span className='text-white/50'>{"{"}</span>
+                <span className='text-[#3be8ff]/60'>export default</span>
+                <span className='text-[#ffd580]/80'> App</span>
+                <span className='text-white/50'>() {"{"}</span>
               </p>
 
-              <p><span className='text-white/30'> return {"("} </span></p>
+              <p><span className='text-white/30'> {'  '}return {"("}</span></p>
 
               <p>
-                <span className='text-white/30'>{"         <"}</span>
-                <span className='text-[#3be8ff]/70'>Card </span>
-                <span className='text-[#aaff80]/60'>title </span>
-                <span className='text-white/30'>= </span>
-                <span className='text-[#aaff80]/70 '>"Dashboard" </span>
-                <span className='text-white/30'>{">"}</span>
-
-              </p>
-
-              <p>
-                <span className='text-white/30'>{"         <"}</span>
-                <span className='text-[#3be8ff]/70'>Button </span>
-                <span className='text-[#aaff80]/60'>text </span>
-                <span className='text-white/30'>= </span>
-                <span className='text-[#aaff80]/70 '>"Hello" </span>
-                <span className='text-white/30'>{"/>"}</span>
-
+                <span className='text-white/30'>{'    <'}</span>
+                <span className='text-[#3be8ff]/70'>Card</span>
+                <span className='text-white/30'>{' '}</span>
+                <span className='text-[#aaff80]/70'>title</span>
+                <span className='text-white/30'>={'"'}</span>
+                <span className='text-[#aaff80]/70'>Dashboard</span>
+                <span className='text-white/30'>{'">'}</span>
               </p>
 
               <p>
-                <span className='text-white/30'>{"         </"}</span>
-                <span className='text-[#3be8ff]/70'>Card </span>
+                <span className='text-white/30'>{'      <'}</span>
+                <span className='text-[#3be8ff]/70'>Button</span>
+                <span className='text-white/30'>{' '}</span>
+                <span className='text-[#aaff80]/70'>text</span>
+                <span className='text-white/30'>={'"'}</span>
+                <span className='text-[#aaff80]/70'>Get Started</span>
+                <span className='text-white/30'>{'" />'}</span>
+              </p>
+
+              <p>
+                <span className='text-white/30'>{'    </'}</span>
+                <span className='text-[#3be8ff]/70'>Card</span>
                 <span className='text-white/30'>{">"}</span>
               </p>
 
@@ -609,13 +610,13 @@ const Home = () => {
               <div className='w-8 h-8 rounded-xl bg-linear-to-br from-[#3be8ff] to-[#0ab5d4] flex items-center justify-center shadow-[0_0_14px_rgba(59,232,255,0.4)]'>
                 <SiValorant size={15} color="#051c20" />
               </div>
-              <span className='text-lg font-bold tracking-tight' style={{ fontFamily: "'Syne',sans-serif" }}>VirtualUI</span>
+              <span className='text-lg font-bold tracking-tight' style={{ fontFamily: "'Syne',sans-serif" }}>ZoupUI</span>
             </div>
 
             <div className='flex flex-wrap justify-center gap-4 sm:gap-5 text-xs text-white/30'>
               <span className='hover:text-white/60 transition-colors'>Components</span>
-              <span className='hover:text-white/60 transition-colors'>admin@virtualui.com</span>
-              <p className='text-xs text-white/25 order-last sm:order-none'>© {new Date().getFullYear()} VirtualUI. All rights reserved.</p>
+              <span className='hover:text-white/60 transition-colors'>admin@zoupui.com</span>
+              <p className='text-xs text-white/25 order-last sm:order-none'>© {new Date().getFullYear()} ZoupUI. All rights reserved.</p>
             </div>
 
           </div>
