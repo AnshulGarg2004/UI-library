@@ -34,9 +34,7 @@ export const POST = async (req: NextRequest) => {
         }
 
         await User.findByIdAndUpdate(userId, {
-            $inc: { credits: credits },
-            $set: { isCreditAvailable: true }
-
+            $inc: { aiCredits: credits },
         }, { new: true });
 
     }
